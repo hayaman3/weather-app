@@ -1,58 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="./assets/fonts-6/css/all.css" />
-		<link rel="stylesheet" href="style.css" />
-		<!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"> -->
-		<script src="script.js" defer></script>
-		<title>Weather</title>
-	</head>
-	<body>
-		<main>
-			<div class="image">
-				<div class="location">
-					<i class="fa-solid fa-location-dot"></i>
-					<div class="current-location">
-						<div>Current Location</div>
-						<div id="city">
-							Canary, Spain
-						</div>
-					</div>
-				</div>
-				<div class="search-box">
-					<i class="fa-solid fa-magnifying-glass"></i>
-					<input type="text" id="input-location" placeholder="Enter Location"/>
-				</div>
-			</div>
 
-			<div class="details">
-				<div>
-					<h1 class="today">Today</h1>
-					<div class="date">Monday 27, July 2022</div>
-				</div>
-				<div class="weather">
-					<div class="flex1">
-						<div id="temperature">
-							20°C
-						</div>
-						<i class="fa-solid fa-sun"></i>
-					</div>
-					<div class="auxiliary-details">
-						<div id="humidity">
-							<span>Humidity:</span>
-							<span>80%</span>
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="./assets/fonts-6/css/all.css" />
+	<link rel="stylesheet" href="style.css" />
+	<!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"> -->
+	<script src="script.js" defer></script>
+	<title>Weather</title>
+</head>
 
-						</div>
-						<div id="wind">
-							<span>Humidity:</span>
-							<span>80%</span>
-						</div>
+<body>
+	<main>
+		<div class="image">
+			<div class="location">
+				<i class="fa-solid fa-location-dot"></i>
+				<div class="current-location">
+					<div>Current Location</div>
+					<div id="city">
+						Canary, Spain
 					</div>
 				</div>
 			</div>
-		</main>
-	</body>
+			<div class="search-box">
+				<i class="fa-solid fa-magnifying-glass"></i>
+				<input type="text" id="input-location" placeholder="Enter Location" />
+			</div>
+		</div>
+
+		<div class="details">
+			<div>
+				<h1 class="today">Today</h1>
+				<div class="date">Monday 27, July 2022</div>
+			</div>
+			<div class="weather">
+				<div class="main-details">
+					<div id="temperature">20°C</div>
+					<i class="fa-solid fa-sun"></i>
+					<div>moderate rain</div>
+				</div>
+				<div class="auxiliary-details">
+					<div>
+						<span>Temp feel:</span>
+						<span>20°C</span>
+					</div>
+					<div>
+						<span>Humidity:</span>
+						<span>80%</span>
+					</div>
+					<div>
+						<span>Wind:</span>
+						<span>1.88 m/s</span>
+					</div>
+					<div>
+						<span>Cloud:</span>
+						<span>100%</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+
 </html>
