@@ -1,11 +1,7 @@
 const search = document.querySelector('#input-location');
 
 function getCityName(cityName) {
-  // const cityName = search.value;
-  // console.log(cityName);
   if (cityName) {
-    // console.log(cityName);
-
     // remove whitespace for the api call
     return cityName
       .replace(/(\s+$|^\s+)/g, '') // remove whitespace from begining and end of string
@@ -16,19 +12,6 @@ function getCityName(cityName) {
   return '';
 }
 
-// current location data
-// weatherData.city = `${data.name}, ${data.sys.country}`;
-// // date
-// // details.date = getDateString()
-// // main details data
-// weatherData.temperature = `${data.main.temp}°C`;
-// weatherData.mainWeather = data.weather[0].main;
-// weatherData.description = data.weather[0].description;
-// // auxiliary details data
-// weatherData.temperatureFeel = `${data.main.feels_like}°C`;
-// weatherData.cloudCover = `${data.clouds.all}%`;
-// weatherData.humidity = `${data.main.humidity}%`;
-// weatherData.windSpeed = `${data.wind.speed}m/s`;
 const weatherIcons = {
   ThunderStorm: '<i class="fa-solid fa-cloud-bolt"></i>',
   Drizzle: '<i class="fa-solid fa-cloud-drizzle"></i>',
@@ -47,10 +30,10 @@ const weatherIcons = {
   Clear: '<i class="fa-solid fa-sun"></i>',
 };
 
-function changeDOM(weatherData) {
-  const main = document.querySelector('main');
+function changeDOM(weatherData, imageUrl) {
   const currentLocation = document.querySelector('.current-location');
   const details = document.querySelector('.details');
+  const image = document.querySelector('.image');
 
   const locationDom = /* html */ `
     <div>Current Location</div>
@@ -93,6 +76,8 @@ function changeDOM(weatherData) {
 
   currentLocation.innerHTML = locationDom;
   details.innerHTML = detailsDom;
+  image.style.backgroundImage = `linear-gradient(to bottom, rgba(125, 125, 125, 0.2), rgba(0, 0, 0, 0.2)),
+    url('${imageUrl}')`;
 }
 
 function getDateString() {
@@ -127,7 +112,7 @@ function getDateString() {
 }
 
 function handleData(data) {
-  const weatherData = {
+  return {
     // current location data
     city: `${data.name}, ${data.sys.country}`,
     // date
@@ -142,33 +127,51 @@ function handleData(data) {
     humidity: `${data.main.humidity}%`,
     windSpeed: `${data.wind.speed}m/s`,
   };
-  console.log(weatherData);
-  changeDOM(weatherData);
 }
 
 function handleError(err) {
   // console.warn(err);
-
-  alert('Cannot Find Location');
-  // return new Response(JSON.stringify({ asdas: 'asd' }));
+  alert('Network Error');
+  // return new Response(JSON.stringify({}));
 }
 
-async function openWeatherAPIcall(cityName) {
-  // const cityName = getCityName();
-
+async function fetchOpenWeatherAPI(cityName) {
   const cityUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&APPID=20f7632ffc2c022654e4093c6947b4f4`;
   const response = await fetch(cityUrl, { mode: 'cors' }).catch(handleError);
   const data = await response.json();
 
-  handleData(data);
+  if (response.status >= 400 && response.status < 600) {
+    alert('Cannot Find Location');
+    throw new Error('Bad response from server');
+  }
+
+  return data;
+}
+
+async function fetchUnsplashApi(location) {
+  const response = await fetch(
+    `https://source.unsplash.com/featured/?${location}`,
+    {
+      mode: 'cors',
+    }
+  );
+  const url = await response.url;
+  return url;
+}
+
+async function ApiCalls(cityName) {
+  const data = await fetchOpenWeatherAPI(cityName);
+  const imageUrl = await fetchUnsplashApi(data.name);
+  const cleanedData = await handleData(data);
+  await changeDOM(cleanedData, imageUrl);
 }
 
 search.addEventListener('keydown', (e) => {
   if (e.code === 'Enter') {
     const cityName = getCityName(search.value);
-    openWeatherAPIcall(cityName);
+    ApiCalls(cityName);
     search.value = '';
   }
 });
 
-// https://source.unsplash.com/featured/?${searchedCity}
+ApiCalls('london');
