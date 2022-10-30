@@ -30,56 +30,6 @@ const weatherIcons = {
   Clear: '<i class="fa-solid fa-sun"></i>',
 };
 
-function changeDOM(weatherData, imageUrl) {
-  const currentLocation = document.querySelector('.current-location');
-  const details = document.querySelector('.details');
-  const image = document.querySelector('.image');
-
-  const locationDom = /* html */ `
-    <div>Current Location</div>
-    <div id="city">
-      ${weatherData.city}
-    </div>
-  `;
-
-  const detailsDom = /* html */ `
-    <div>
-      <h1 class="today">Today</h1>
-      <div class="date">${weatherData.date}</div>
-    </div>
-    <div class="weather">
-      <div class="main-details">
-        <div id="temperature">${weatherData.temperature}</div>
-        ${weatherIcons[weatherData.mainWeather]}
-        <div>${weatherData.description}</div>
-      </div>
-      <div class="auxiliary-details">
-        <div>
-          <span>Temp feel:</span>
-          <span>${weatherData.temperatureFeel}</span>
-        </div>
-        <div>
-          <span>Humidity:</span>
-          <span>${weatherData.humidity}</span>
-        </div>
-        <div>
-          <span>Wind:</span>
-          <span>${weatherData.windSpeed}</span>
-        </div>
-        <div>
-          <span>Cloud:</span>
-          <span>${weatherData.cloudCover}</span>
-        </div>
-      </div>
-    </div>
-  `;
-
-  currentLocation.innerHTML = locationDom;
-  details.innerHTML = detailsDom;
-  image.style.backgroundImage = `linear-gradient(to bottom, rgba(125, 125, 125, 0.2), rgba(0, 0, 0, 0.2)),
-    url('${imageUrl}')`;
-}
-
 function getDateString() {
   const date = new Date();
   const days = [
@@ -111,12 +61,56 @@ function getDateString() {
   return `${day} ${date.getDate()} ${month} ${date.getFullYear()}`;
 }
 
+function changeDOM(weatherData, imageUrl) {
+  const currentLocation = document.querySelector('.current-location');
+  const date = document.querySelector('.date');
+  const image = document.querySelector('.image');
+  const weatherClass = document.querySelector('.weather');
+
+  const locationDom = /* html */ `
+    <div>Current Location</div>
+    <div id="city">
+      ${weatherData.city}
+    </div>
+  `;
+
+  const detailsDom = /* html */ `
+      <div class="main-details">
+        <div id="temperature">${weatherData.temperature}</div>
+        ${weatherIcons[weatherData.mainWeather]}
+        <div>${weatherData.description}</div>
+      </div>
+      <div class="auxiliary-details">
+        <div>
+          <span>Temp feel:</span>
+          <span>${weatherData.temperatureFeel}</span>
+        </div>
+        <div>
+          <span>Humidity:</span>
+          <span>${weatherData.humidity}</span>
+        </div>
+        <div>
+          <span>Wind:</span>
+          <span>${weatherData.windSpeed}</span>
+        </div>
+        <div>
+          <span>Cloud:</span>
+          <span>${weatherData.cloudCover}</span>
+        </div>
+      </div>
+  `;
+
+  currentLocation.innerHTML = locationDom;
+  date.innerHTML = `${getDateString()}`;
+  weatherClass.innerHTML = detailsDom;
+  image.style.backgroundImage = `linear-gradient(to bottom, rgba(125, 125, 125, 0.2), rgba(0, 0, 0, 0.2)),
+    url('${imageUrl}')`;
+}
+
 function handleData(data) {
   return {
     // current location data
     city: `${data.name}, ${data.sys.country}`,
-    // date
-    date: getDateString(),
     // main details data
     temperature: `${Math.round(data.main.temp)}°C`,
     mainWeather: data.weather[0].main,
