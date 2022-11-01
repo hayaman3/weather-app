@@ -34,9 +34,7 @@ main {
   position: relative;
   background-size: cover;
   background-position: center;
-  background-image:
-    linear-gradient(to bottom, rgba(125, 125, 125, 0.2), rgba(0, 0, 0, 0.2)),
-    url('./assets/default.jpg');
+  background-color: #fff;
 }
 
 .location {
@@ -183,4 +181,36 @@ footer {
 .footer-svg {
   height: 20px;
   width: 16px;
+}
+
+.lds-dual-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -10%);
+  display: none;
+  width: 50px;
+  height: 500px;
+}
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid rgb(0, 0, 0);
+  border-color: rgb(0, 0, 0) transparent rgb(0, 0, 0) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

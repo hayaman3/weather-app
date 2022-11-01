@@ -108,6 +108,7 @@ function changeDOM(weatherData, imageUrl) {
 }
 
 function handleData(data) {
+  console.log(data.sys.country);
   return {
     // current location data
     city: `${data.name}, ${data.sys.country}`,
@@ -138,7 +139,7 @@ async function fetchOpenWeatherAPI(cityName) {
     alert('Cannot Find Location');
     throw new Error('Bad response from server');
   }
-
+  data.userLocationInput = cityName;
   return data;
 }
 
@@ -155,17 +156,29 @@ async function fetchUnsplashApi(location) {
 
 async function ApiCalls(cityName) {
   const data = await fetchOpenWeatherAPI(cityName);
-  const imageUrl = await fetchUnsplashApi(data.name);
+  const imageUrl = await fetchUnsplashApi(data.userLocationInput);
   const cleanedData = await handleData(data);
   await changeDOM(cleanedData, imageUrl);
+}
+
+async function handleInput(cityName) {
+  const loader = document.querySelector('.lds-dual-ring');
+  loader.style.display = 'block';
+  const body = document.querySelector('body');
+
+  await ApiCalls(cityName);
+
+  body.style.opacity = '.5';
+  loader.style.display = 'none';
+  body.style.opacity = '1';
 }
 
 search.addEventListener('keydown', (e) => {
   if (e.code === 'Enter') {
     const cityName = getCityName(search.value);
-    ApiCalls(cityName);
+    handleInput(cityName);
     search.value = '';
   }
 });
 
-ApiCalls('london');
+handleInput('london');
