@@ -32,15 +32,7 @@ const weatherIcons = {
 
 function getDateString() {
   const date = new Date();
-  const days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const months = [
     'January',
     'February',
@@ -107,8 +99,7 @@ function changeDOM(weatherData, imageUrl) {
     url('${imageUrl}')`;
 }
 
-function handleData(data) {
-  console.log(data.sys.country);
+function formatData(data) {
   return {
     // current location data
     city: `${data.name}, ${data.sys.country}`,
@@ -125,9 +116,8 @@ function handleData(data) {
 }
 
 function handleError(err) {
-  // console.warn(err);
-  alert('Network Error');
-  // return new Response(JSON.stringify({}));
+  const errorMessage = err?.response?.data?.message || err?.response?.message || 'Network Error';
+  alert(errorMessage);
 }
 
 async function fetchOpenWeatherAPI(cityName) {
@@ -144,12 +134,9 @@ async function fetchOpenWeatherAPI(cityName) {
 }
 
 async function fetchUnsplashApi(location) {
-  const response = await fetch(
-    `https://source.unsplash.com/featured/?${location}`,
-    {
-      mode: 'cors',
-    }
-  );
+  const response = await fetch(`https://source.unsplash.com/featured/?${location}`, {
+    mode: 'cors',
+  });
   const url = await response.url;
   return url;
 }
@@ -157,8 +144,8 @@ async function fetchUnsplashApi(location) {
 async function ApiCalls(cityName) {
   const data = await fetchOpenWeatherAPI(cityName);
   const imageUrl = await fetchUnsplashApi(data.userLocationInput);
-  const cleanedData = await handleData(data);
-  await changeDOM(cleanedData, imageUrl);
+  const cleanedData = formatData(data);
+  changeDOM(cleanedData, imageUrl);
 }
 
 async function handleInput(cityName) {
