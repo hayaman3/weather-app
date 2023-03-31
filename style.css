@@ -19,9 +19,10 @@ main {
   display: flex;
   background-color: #fff;
   width: 92%;
-  height: 520px;
   border-radius: 25px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  max-width: 1000px;
+  min-width: 600px;
 }
 
 .image {
@@ -35,6 +36,7 @@ main {
   background-size: cover;
   background-position: center;
   background-color: #fff;
+  height: 520px;
 }
 
 .location {
